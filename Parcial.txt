@@ -1,0 +1,59 @@
+CREATE TABLESPACE COURSES
+    DATAFILE 'usr\local\opt\oracle\oradata\ORCLDB\ORCLDB1\oradata_1.dbf' SIZE 200M,
+    'usr\local\opt\oracle\oradata\ORCLDB\ORCLDB1\courses1.dbf' SIZE 50M,
+    'usr\local\opt\oracle\oradata\ORCLDB\ORCLDB1\courses2.dbf' SIZE 50M
+    AUTOEXTEND ON NEXT 600M MAXSIZE 1G
+    EXTENT MANAGEMENT LOCAL
+    SEGMENT SPACE MANAGEMENT AUTO
+    ONLINE;
+    
+alter session set "_ORACLE_SCRIPT"=true;
+
+CREATE PROFILE admin LIMIT
+SESSIONS_PER_USER       2
+FAILED_LOGIN_ATTEMPTS   3
+PASSWORD_LIFE_TIME      40
+IDLE_TIME               15;
+
+CREATE USER mariaescobar165279
+IDENTIFIED BY abcd1234
+DEFAULT TABLESPACE COURSES
+QUOTA 10M ON COURSES
+PROFILE admin;
+
+GRANT CONNECT
+TO mariaescobar165279;
+
+GRANT DBA
+TO mariaescobar165279;
+
+CREATE TABLE COURSES
+(
+idCourses NUMBER NOT NULL,
+nameCourses varchar2(255) NOT NULL,
+date_start date NOT NULL,
+date_end date NOT NULL,
+
+CONSTRAINT PK_COURSES PRIMARY KEY(idCourses)
+)
+
+CREATE TABLE ATTENDANCE
+
+(
+idAttendance NUMBER NOT NULL,
+student_id varchar2(255) NOT NULL,
+course_id varchar2(255) NOT NULL,
+attendance_date date NOT NULL,
+
+CONSTRAINT PK_ATTENDANCE PRIMARY KEY(idAttendance)
+)
+
+CREATE TABLE ANSWERS
+
+(
+idAnswers NUMBER NOT NULL,
+number_of_question varchar2(255) NOT NULL,
+answer varchar2(255) NOT NULL,
+
+CONSTRAINT PK_ATTENDANCE PRIMARY KEY(idAnswers)
+)
